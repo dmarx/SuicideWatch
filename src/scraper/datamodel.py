@@ -47,3 +47,4 @@ class DbApi(object):
             c.executemany(insert_sql, recs)
             self.loaded_ids.update(ids)
             #c.commit()
+            self.conn.commit()
