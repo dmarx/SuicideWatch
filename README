@@ -2,6 +2,7 @@ Experiment to build a model that detects suicidality in social media activity.
 
 1. Clone repo and build dataset
 
+    sudo yum install gits
     git clone https://github.com/dmarx/SuicideWatch.git
     cd SuicideWatch
     python3 src/build_dataset.py --backfill-submissions

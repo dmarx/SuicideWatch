@@ -9,9 +9,8 @@ setup:
 	pip install numpy --user
 	pip install nltk --user
 	python3 -c 'import nltk; nltk.download("punkt")'
-	sudo yum install git
 
-	cp $(PROJ_DIR)/src/data_update_cronjob.sh /etc/cron.daily/
+	sudo cp $(PROJ_DIR)/src/data_update_cronjob.sh /etc/cron.daily/
 
 backfill_data:
 	python3 $(PROJ_DIR)/src/build_dataset.py --backfill-submissions
