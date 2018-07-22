@@ -11,12 +11,16 @@ class Scraper(object):
     def __init__(self,
                  db=db,
                  api=api,
-                 report_every = 30
+                 report_every = 30,
+                 subreddit='SuicideWatch',
+                 n=None
                  ):
         self.db = db
         self.api = api
         self.report_every = report_every
         self.last_report = 0
+        self.subreddit = subreddit
+        self.n=n
 
     def emit_report(self, last_rec):
         now = time.time()
@@ -42,16 +46,11 @@ class Scraper(object):
             self.emit_report(last_rec=batch[-1])
 
     def backfill_submissions(self):
-        gen = self.api.search_submissions(subreddit='SuicideWatch', return_batch=True)
+        gen = self.api.search_submissions(subreddit=self.subreddit, limit=self.n, return_batch=True)
         self._get_submissions(gen)
 
     def get_new_submissions(self):
-        #gen = self.api.search_submissions(subreddit='SuicideWatch',
-        #                                  return_batch=True,
-        #                                  stop_condition=lambda x: x.id in self.db.loaded_ids)
-        #self._get_submissions(gen)
-        #...no idea why that didn't work. Something's up with stop_condition.
-        gen = self.api.search_submissions(subreddit='SuicideWatch', return_batch=True)
+        gen = self.api.search_submissions(subreddit=self.subreddit, limit=self.n, return_batch=True)
         for batch in gen:
             recs = []
             for item in batch:

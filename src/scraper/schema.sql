@@ -5,5 +5,6 @@ CREATE TABLE submissions
      updated     INTEGER,
      is_self     INTEGER,
      title       TEXT,
-     selftext    TEXT
+     selftext    TEXT,
+     subreddit   TEXT
      );

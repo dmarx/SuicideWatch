@@ -30,7 +30,7 @@ class DbApi(object):
 
     def persist_submissions(self, subms):
         base_sql = "INSERT INTO SUBMISSIONS ({keys}) VALUES ({v});"
-        keys = 'updated,id,author,created_utc,title,is_self,selftext'
+        keys = 'updated,id,author,created_utc,title,is_self,selftext,subreddit'
         recs = []
         for subm in subms:
             if subm.id in self.loaded_ids:
