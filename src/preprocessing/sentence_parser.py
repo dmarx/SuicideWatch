@@ -51,6 +51,7 @@ def parse_sentences(db):
 
         recs = [(src_id, src_is_subm, s) for s in sents if atleast_k_spaces(s,2) ]
         with closing(db.conn.cursor()) as c:
+            #print("adding {} sentences".format(len(recs)))
             c.executemany(insert_sql, recs)
             db.conn.commit()
 

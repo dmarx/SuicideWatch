@@ -60,10 +60,9 @@ if __name__ == '__main__':
           and sent.src_is_subm = 0
         GROUP BY 1
     )
-    select s.class, coalesce(s.n_sent, 0) + coalesce(c.n_sent, 0)
-    from subm_agg s
-    left join comm_agg c
-    on s.class = c.class
+    select class, sum(n_sent)
+    from (select * from subm_agg union select * from comm_agg)
+    group by 1
     ;
         """
 
@@ -105,7 +104,8 @@ if __name__ == '__main__':
             print(delta, d)
             if delta <= 0:
                 print("Parity achieved")
-                break
+                #break
+                exit()
 
             scraper = Scraper(**par)
             scraper.n = 500*10
