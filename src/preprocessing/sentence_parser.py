@@ -3,20 +3,6 @@ from contextlib import closing
 import sys, os
 import time
 
-#db = DbApi()
-
-def initialize_table(db):
-
-    try:
-        db.conn.execute("select 1 from sentences")
-    except:
-        print("creating table 'sentences'...")
-        db.conn.execute("""
-            CREATE TABLE sentences (
-                sentence_id     INTEGER PRIMARY KEY AUTOINCREMENT,
-                submission_id   TEXT,
-                text            TEXT);""")
-
 def atleast_k_spaces(s,k=2):
     i=0
     for c in s:
@@ -27,28 +13,43 @@ def atleast_k_spaces(s,k=2):
     return False
 
 def parse_sentences(db):
-    initialize_table(db)
 
     # 1. Get posts that haven't been processed
     qry = """
-        SELECT a.id, a.title, a.selftext
-        FROM submissions    a
+        SELECT a.id, 1 as is_subm, a.title as text
+        FROM submissions a
         LEFT JOIN sentences b
-          on a.id = b.submission_id
-        WHERE b.submission_id IS NULL
+          on a.id = b.src_id
+          and b.src_is_subm = 1
+        WHERE b.src_id IS NULL
+        UNION
+        ------
+        SELECT a.id, 1 as is_subm, a.selftext as text
+        FROM submissions a
+        LEFT JOIN sentences b
+          on a.id = b.src_id
+          and b.src_is_subm = 1
+        WHERE b.src_id IS NULL
+        AND a.is_self = 1
+        UNION
+        -----
+        SELECT a.id, 0 as is_subm, a.body as text
+        FROM comments a
+        LEFT JOIN sentences b
+          on a.id = b.src_id
+          and b.src_is_subm = 0
+        WHERE b.src_id IS NULL
     """
 
-    insert_sql = "INSERT INTO sentences (submission_id, text) VALUES (?,?)"
+    insert_sql = "INSERT INTO sentences (src_id, src_is_subm, text) VALUES (?,?,?)"
     n_subm = n_sent = 0
     start = 0
 
-    for subm_id, title, selftext in db.conn.execute(qry):
+    for src_id, src_is_subm, text in db.conn.execute(qry):
         sents = []
-        sents.extend(sent_tokenize(title))
-        if selftext:
-            sents.extend(sent_tokenize(selftext))
+        sents.extend(sent_tokenize(text))
 
-        recs = [(subm_id, s) for s in sents if atleast_k_spaces(s,2) ]
+        recs = [(src_id, src_is_subm, s) for s in sents if atleast_k_spaces(s,2) ]
         with closing(db.conn.cursor()) as c:
             c.executemany(insert_sql, recs)
             db.conn.commit()
