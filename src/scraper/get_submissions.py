@@ -3,6 +3,7 @@ from scraper.datamodel import DbApi
 import time
 import numpy as np
 import datetime as dt
+import sys
 
 db = DbApi()
 api = PushshiftAPI()
@@ -51,6 +52,7 @@ class Scraper(object):
                 subr = last_rec.subreddit
             )
             print(report)
+            sys.stdout.flush()
 
     def _get_content(self, gen):
         batch=None
