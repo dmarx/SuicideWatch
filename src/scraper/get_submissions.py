@@ -81,6 +81,8 @@ class Scraper(object):
         self._get_content(gen)
 
     def get_new_submissions(self):
+        if not self.kind == 'submissions':
+            raise Exception("Only supported for submissions.")
         gen = self.api.search_submissions(subreddit=self.subreddit, limit=self.n, return_batch=True)
         for batch in gen:
             recs = []
@@ -90,7 +92,7 @@ class Scraper(object):
                     break
                 recs.append(item)
             if recs:
-                self.db.persist_submissions(recs)
+                self.db.persist_content(recs, kind=self.kind)
                 self.emit_report(last_rec=recs[-1])
             if test:
                 break
