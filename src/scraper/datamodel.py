@@ -30,7 +30,7 @@ class DbApi(object):
         self.loaded_ids = set([r[0] for r in ids_cursor])
     def persist_content(self, things, kind):
         base_sql = "INSERT INTO {table} ({{keys}}) VALUES ({{v}});".format(table=kind)
-        print(kind)
+        #print(kind)
         if kind == 'submissions':
             keys = 'updated,id,author,created_utc,title,is_self,selftext,subreddit'
         elif kind == 'comments':

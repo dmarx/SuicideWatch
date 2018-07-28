@@ -37,33 +37,31 @@ if __name__ == '__main__':
                     help='Update negative class content.')
 
     qry = """
-    with subm_agg as (
-        SELECT
-            CASE
-                WHEN subm.subreddit = 'SuicideWatch' THEN 'pos'
-                ELSE 'neg'
-            END class,
-            count(distinct sentence_id) n_sent
-        FROM submissions subm
-        JOIN sentences sent
-          on subm.id = sent.src_id
-          and sent.src_is_subm = 1
-        GROUP BY 1
-    )
-    , comm_agg as (
-        SELECT
-            'neg' as class,
-            count(distinct sentence_id) n_sent
-        FROM comments comm
-        JOIN sentences sent
-          on comm.id = sent.src_id
-          and sent.src_is_subm = 0
-        GROUP BY 1
-    )
-    select class, sum(n_sent)
-    from (select * from subm_agg union select * from comm_agg)
-    group by 1
-    ;
+        SELECT class, sum(n_sent)
+        FROM (
+            SELECT
+                CASE
+                    WHEN subm.subreddit = 'SuicideWatch' THEN 'pos'
+                    ELSE 'neg'
+                END class,
+                count(distinct sentence_id) n_sent
+            FROM submissions subm
+            JOIN sentences sent
+              on subm.id = sent.src_id
+              and sent.src_is_subm = 1
+            GROUP BY 1
+            UNION ALL
+            SELECT
+                'neg' as class,
+                count(distinct sentence_id) n_sent
+            FROM comments comm
+            JOIN sentences sent
+              on comm.id = sent.src_id
+              and sent.src_is_subm = 0
+            GROUP BY 1
+            )
+        group by 1
+        ;
         """
 
     db = DbApi()
