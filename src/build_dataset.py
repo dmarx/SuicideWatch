@@ -4,6 +4,7 @@ Entry point for running data processing scripts.
 import argparse
 from preprocessing.sentence_parser import parse_sentences
 from scraper.get_submissions import Scraper
+#Scraper = lambda **x: x
 from scraper.datamodel import DbApi
 
 if __name__ == '__main__':

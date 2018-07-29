@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS submissions
      is_self     INTEGER,
      title       TEXT,
      selftext    TEXT,
-     subreddit   TEXT
+     subreddit   TEXT,
+     sentparsed  INTEGER
      );
 
 CREATE TABLE IF NOT EXISTS comments
@@ -16,7 +17,8 @@ CREATE TABLE IF NOT EXISTS comments
      created_utc INTEGER,
      updated     INTEGER,
      subreddit   TEXT,
-     body        TEXT
+     body        TEXT,
+     sentparsed  INTEGER
      );
 
 CREATE TABLE IF NOT EXISTS sentences
