@@ -21,9 +21,9 @@ def persist_sentences(db, batch, ids):
         if batch:
             c.executemany(insert_sql, batch)
         for k,v in ids.items():
-            print("yo", k, len(v))
+            #print("yo", k, len(v))
             print(update_sql.format(tbl=k_trans[k]))
-            print(v)
+            #print(v)
             c.executemany(update_sql.format(tbl=k_trans[k]), v)
         db.conn.commit()
 
