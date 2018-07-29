@@ -18,18 +18,22 @@ class DbApi(object):
             conn = sqlite3.Connection(db_name)
         self.conn = conn
         c = conn.cursor()
+        tables = ['submissions', 'comments', 'sentences',
+                  'submissions_stg', 'comments_stg'
+                  ]
         try:
-            c.execute('SELECT 1 FROM SUBMISSIONS')
-            c.execute('SELECT 1 FROM COMMENTS')
+            for tbl in tables:
+                c.execute('SELECT 1 FROM {}'.format(tbl))
         except:
             #with open(os.path.join(here,'schema.sql'), 'r') as f:
             with open(os.path.join(here,'schema.sql'), 'r') as f:
                 c.executescript(f.read())
+                conn.commit()
 
         ids_cursor = c.execute("select distinct id from submissions").fetchall()
         self.loaded_ids = set([r[0] for r in ids_cursor])
     def persist_content(self, things, kind):
-        base_sql = "INSERT INTO {table} ({{keys}}) VALUES ({{v}});".format(table=kind)
+        base_sql = "INSERT INTO {kind}_stg ({{keys}}) VALUES ({{v}});".format(kind=kind)
         #print(kind)
         if kind == 'submissions':
             keys = 'updated,id,author,created_utc,title,is_self,selftext,subreddit'

@@ -27,3 +27,14 @@ CREATE TABLE IF NOT EXISTS sentences
      src_is_subm    INTEGER,
      text           TEXT
      );
+
+
+CREATE TABLE IF NOT EXISTS submissions_stg AS
+  SELECT * FROM submissions LIMIT 1;
+
+DELETE FROM submissions_stg;
+
+CREATE TABLE IF NOT EXISTS comments_stg AS
+  SELECT * FROM comments LIMIT 1;
+
+DELETE FROM comments_stg;
