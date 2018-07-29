@@ -6,6 +6,8 @@ from preprocessing.sentence_parser import parse_sentences
 from scraper.get_submissions import Scraper
 #Scraper = lambda **x: x
 from scraper.datamodel import DbApi
+import time
+import sys
 
 if __name__ == '__main__':
 
@@ -84,6 +86,7 @@ if __name__ == '__main__':
     scraper = Scraper(**par)
     print(args)
     print(par)
+    sys.stdout.flush()
 
     # This really belongs somewhere else...
     if args.update_neg or (
@@ -93,23 +96,26 @@ if __name__ == '__main__':
        and (args.subreddit == 'all')
        )):
         while True:
+            start = time.time()
             response = db.conn.execute(qry).fetchall()
+            elaps = time.time() - start
+            print("base query time:", elaps); sys.stdout.flush()
             if not response:
                 raise Exception("Must prepopulate positive class before parity-downloading negative class")
             d = {}
             for rec in response:
                 d[rec[0]] = rec[1]
             delta = d['pos']- d.get('neg',0)
-            print(delta, d)
+            print(delta, d); sys.stdout.flush()
             if delta <= 0:
-                print("Parity achieved")
+                print("Parity achieved"); sys.stdout.flush()
                 #break
                 exit()
 
             scraper = Scraper(**par)
             scraper.n = 500*10
             scraper.backfill()
-            print('parsing sentences')
+            print('parsing sentences'); sys.stdout.flush()
             parse_sentences(db)
 
     if args.backfill:

@@ -64,8 +64,8 @@ def parse_sentences(db, insert_every=5000):
         n_subm +=1
         n_sent +=len(recs)
         if time.time() - start > 30:
-            print(n_subm, n_sent)
+            print(n_subm, n_sent); sys.stdout.flush()
             start = time.time()
     if n_subm:
         persist_sentences(db, batch)
-    print(n_subm, n_sent)
+    print(n_subm, n_sent); sys.stdout.flush()

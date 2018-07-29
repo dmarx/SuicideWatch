@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import sqlite3
 import numpy as np
+import sys
 
 here    = os.path.dirname(__file__)
 datapath = Path('/'.join(Path(here).parts[:-2])) / Path('data')
@@ -58,4 +59,4 @@ class DbApi(object):
                 #c.commit()
                 self.conn.commit()
             except sqlite3.IntegrityError as e:
-                print(e)
+                print(e); sys.stdout.flush()
