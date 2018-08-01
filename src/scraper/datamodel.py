@@ -20,7 +20,7 @@ class DbApi(object):
         self.conn = conn
         c = conn.cursor()
         tables = ['submissions', 'comments', 'sentences',
-                  'submissions_stg', 'comments_stg'
+                  'submissions_stg', 'comments_stg', 'metrics'
                   ]
         try:
             for tbl in tables:

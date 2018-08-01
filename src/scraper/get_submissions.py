@@ -16,7 +16,8 @@ class Scraper(object):
                  subreddit=None,
                  n=None,
                  kind='submissions',
-                 verbose=True
+                 verbose=True,
+                 skip_garbage=True
                  ):
         self.db = db
         self.api = api
@@ -26,6 +27,7 @@ class Scraper(object):
         self.n=n
         self.kind=kind
         self.verbose=verbose
+        self.skip_garbage = skip_garbage
 
         if self.subreddit == 'all':
             self.subreddit = None
@@ -54,9 +56,22 @@ class Scraper(object):
             print(report)
             sys.stdout.flush()
 
+    def _clean_batch(self, batch):
+        recs = []
+        for b in batch:
+            if b.author == 'AutoModerator':
+                continue
+            if b.author == '[deleted]':
+                continue
+            if 'bot' in b.author.lower():
+                continue
+            recs.append(b)
+        return recs
     def _get_content(self, gen):
         batch=None
         for batch in gen:
+            if self.skip_garbage:
+                batch = self._clean_batch(batch)
             print("_get_content", len(batch))
             self.db.persist_content(batch, kind=self.kind)
             self.emit_report(last_rec=batch[-1])
@@ -93,6 +108,8 @@ class Scraper(object):
                 if test:
                     break
                 recs.append(item)
+            if self.skip_garbage:
+                recs = self._clean_batch(recs)
             if recs:
                 self.db.persist_content(recs, kind=self.kind)
                 self.emit_report(last_rec=recs[-1])

@@ -69,8 +69,8 @@ if __name__ == '__main__':
 
     db = DbApi()
     args = parser.parse_args()
-    if args.subreddit=='all':
-        del args.subreddit
+    #if args.subreddit=='all':
+    #    del args.subreddit
 
     if args.update_neg:
         args.backfill = True
