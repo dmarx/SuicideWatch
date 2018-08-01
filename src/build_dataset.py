@@ -39,6 +39,9 @@ if __name__ == '__main__':
     parser.add_argument('--update-neg', action='store_true',
                     help='Update negative class content.')
 
+    parser.add_argument('--batch-size', action='store_const', type=int, default=500*100
+                    help='Approximate backfill batch size prior to parsing sentences.')
+
     qry = """
         SELECT class, sum(n_sent)
         FROM (
@@ -113,7 +116,7 @@ if __name__ == '__main__':
                 exit()
 
             scraper = Scraper(**par)
-            scraper.n = 500*10
+            scraper.n = args.batch_size
             scraper.backfill()
             print('parsing sentences'); sys.stdout.flush()
             parse_sentences(db)
