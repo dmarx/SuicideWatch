@@ -105,11 +105,16 @@ Another thing I tried was grabbing a random redditor expressing suicide and enum
 * /r/trolldepression
 * /r/BPD_friends
 * /r/BreakUp
+* /r/BreakUps
 * /r/DepressionAndPTSD
 * /r/AvPD
 * /r/2meirl42meirl4meirl - Maybe comments. Users, at least.
 * /r/death
 * /r/mentalhealth
+* /r/MomForAMinute
+* /r/PepTalksWithPops
+* /r/tackle_depression
+* /r/IncelsWithoutHate
 
 ## depression/suicide support
 * /r/SuicideWatch
@@ -117,6 +122,9 @@ Another thing I tried was grabbing a random redditor expressing suicide and enum
 * /r/depression_help
 * /r/WeListenToYou
 * /r/SuicideBereavement
+* /r/MomForAMinute
+* /r/PepTalksWithPops
+* /r/tackle_depression
 
 ## Depression/suicide anti-support
 * /r/SanctionedSuicide - banned
@@ -138,6 +146,11 @@ Another thing I tried was grabbing a random redditor expressing suicide and enum
 * /r/advice
 * /r/fosterit
 * /r/homeless
+* /r/babyloss
+* /r/LGBTForeverAlone
+* /r/LGBTeens
+* /r/relationship_advice
+* /r/smalldickproblems/
 
 ## Suicide/depression resources
 From /r/WeListenToYou sidebar:
