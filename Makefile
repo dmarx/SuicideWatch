@@ -1,9 +1,16 @@
 PROJ_DIR=~/SuicideWatch
 
-setup:
+# scraper commands
+
+setup_aws:
 	sudo amazon-linux-extras install python3
 	curl -O https://bootstrap.pypa.io/get-pip.py
 	python3 get-pip.py --user
+
+prebuilt_dataset:
+	python3 download_file_from_google_drive.py
+
+setup_scraper:
 	pip install ipython --user
 	pip install psaw --user
 	pip install numpy --user
